@@ -1,6 +1,7 @@
 // let body = document.getElementById("body")
+// check out lodash
+//
 let main = document.getElementById("main")
-let pushedArray = []
 let pokemonNames = []
 let fetchedData = []
 let numbers = []
@@ -18,22 +19,20 @@ let accordianItem = `<div class="accordion-item">
 </div>`
 
 //todo avoid recursive loop bugs by removing pushPokemonNames() until all data is fetched
+//only fetch if less than 151 pokemon
 let fetchAPI = async (url) => {
+	if (pokemonNames.length > 150) {
+		return null
+	}
 	const res = await fetch(url)
 	const data = await res.json()
-	pushArray(data)
+	//may not need pushArray anymore because of magic.
 	await pushPokemonNames(data)
 	let nextURL = data.next
 	await fetchAPI(nextURL)
 	await capitalizePokemonNames()
-	console.log("fetchAPIs pushedArray", pushedArray[0].results[0].name)
 }
 
-let pushArray = (data) => {
-	//making this fucntion instead of pushing where it is called after the await/async
-	//----function allowed it to work. no idea why
-	return pushedArray.push(data)
-}
 //will add numbers starting with one to numberWords array based on how many pokemon have been fetched
 let numberArrayGenerator = () => {
 	for (let i = 0; i < pokemonNames.length; i++) {
@@ -80,17 +79,5 @@ let pushPokemonNames = async (data) => {
 // 	console.log(pokemonNames)
 // }
 fetchAPI("https://pokeapi.co/api/v2/pokemon")
-	//
-	.then(console.log(pushedArray))
-	//because .then expects a function, implementing a callback function allows it to utilize the function at the
-	//----appropropraite time, vs the above line
-	//----which will just call the console.log immediately which gives the .then nothing to work with (expecting a function)
-	.then(() => {
-		console.log("promise is done")
-	})
-//this is a good stopping point, why does the below line have the jumbled data instead of names?
-// console.log("pokemonNames", pokemonNames)
-// console.log(fetchedData)
-// console.log("pushedArray", pushedArray.results)
 
 //single pokemon from data 'pushedArray[0].results[0].name'
