@@ -21,8 +21,11 @@ let fetchAPI = async (url) => {
 	const res = await fetch(url)
 	const data = await res.json()
 	pushArray(data)
-	// fetchAPI(pushedArray[0].next)
-	console.log("fetchAPIs pushedArray", pushedArray[0].next)
+	await pushPokemonNames()
+	let nextURL = data.next
+	await fetchAPI(nextURL)
+	await capitalizePokemonNames()
+	console.log("fetchAPIs pushedArray", pushedArray[0].results[0].name)
 }
 
 let pushArray = (data) => {
@@ -31,8 +34,8 @@ let pushArray = (data) => {
 	return pushedArray.push(data)
 }
 //will add numbers starting with one to numberWords array based on how many pokemon have been fetched
-let numberWordsGenerator = () => {
-	for (i = 1; i < pokemonNames.length; i++) {
+let numberArrayGenerator = () => {
+	for (i = 0; i < pokemonNames.length; i++) {
 		numbers += numbers + i
 	}
 }
@@ -40,12 +43,35 @@ let numberWordsGenerator = () => {
 let accordianGenerator = () => {
 	main = main + accordianItem
 }
+//q4e i converted pushPokemonNames to a for loop instead of a for of loop (both functions below)
+//----in what manner am I misusing the for of? results undefined when given [pokemon]
+//TODO good practice to convert this function to eitehr forEach, or map, or for of loop etc
+let capitalizePokemonNames = async () => {
+	for (i = 0; i < pokemonNames.length; i++) {
+		let indyPokemonName = pokemonNames[i]
+		let firstLetter = indyPokemonName[0].toUpperCase()
+		let restOfLetters = indyPokemonName.slice(1)
+		let cappedName = firstLetter + restOfLetters
+		pokemonNames[i] = cappedName
+	}
+	console.log("capitalizePokemonNames()", pokemonNames)
+}
+
+let pushPokemonNames = async () => {
+	for (i = 0; i < pushedArray[0].results.length; i++) {
+		
+		pokemonNames.push(pushedArray[].results[i].name)
+	}
+
+	console.log("pushPokemonNames()", pokemonNames)
+}
 
 // let pushPokemonNames = () => {
-// 	for (pokemon of pushedArray.length)
-// 		pokemonNames.push(pushedArray[0].results[0].name)
+// 	for (pokemon of pushedArray[0].results) {
+// 		pokemonNames.push(pushedArray[0].results[pokemon].name)
+// 	}
+// 	console.log(pokemonNames)
 // }
-const logResult = console.log("whatever")
 fetchAPI("https://pokeapi.co/api/v2/pokemon")
 	//
 	.then(console.log(pushedArray))
@@ -59,3 +85,5 @@ fetchAPI("https://pokeapi.co/api/v2/pokemon")
 // console.log("pokemonNames", pokemonNames)
 // console.log(fetchedData)
 // console.log("pushedArray", pushedArray.results)
+
+//single pokemon from data 'pushedArray[0].results[0].name'
