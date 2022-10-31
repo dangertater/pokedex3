@@ -17,11 +17,12 @@ let accordianItem = `<div class="accordion-item">
 </div>
 </div>`
 
+//todo avoid recursive loop bugs by removing pushPokemonNames() until all data is fetched
 let fetchAPI = async (url) => {
 	const res = await fetch(url)
 	const data = await res.json()
 	pushArray(data)
-	await pushPokemonNames()
+	await pushPokemonNames(data)
 	let nextURL = data.next
 	await fetchAPI(nextURL)
 	await capitalizePokemonNames()
@@ -35,7 +36,7 @@ let pushArray = (data) => {
 }
 //will add numbers starting with one to numberWords array based on how many pokemon have been fetched
 let numberArrayGenerator = () => {
-	for (i = 0; i < pokemonNames.length; i++) {
+	for (let i = 0; i < pokemonNames.length; i++) {
 		numbers += numbers + i
 	}
 }
@@ -47,7 +48,7 @@ let accordianGenerator = () => {
 //----in what manner am I misusing the for of? results undefined when given [pokemon]
 //TODO good practice to convert this function to eitehr forEach, or map, or for of loop etc
 let capitalizePokemonNames = async () => {
-	for (i = 0; i < pokemonNames.length; i++) {
+	for (let i = 0; i < pokemonNames.length; i++) {
 		let indyPokemonName = pokemonNames[i]
 		let firstLetter = indyPokemonName[0].toUpperCase()
 		let restOfLetters = indyPokemonName.slice(1)
@@ -57,14 +58,20 @@ let capitalizePokemonNames = async () => {
 	console.log("capitalizePokemonNames()", pokemonNames)
 }
 
-let pushPokemonNames = async () => {
-	for (i = 0; i < pushedArray[0].results.length; i++) {
-		
-		pokemonNames.push(pushedArray[].results[i].name)
+let pushPokemonNames = async (data) => {
+	for (let singlePokemon of data.results) {
+		pokemonNames.push(singlePokemon.name)
 	}
-
 	console.log("pushPokemonNames()", pokemonNames)
 }
+// let pushPokemonNames = async () => {
+// 	for (i = 0; i < pushedArray[0].results.length; i++) {
+// 		for (pokemon of )
+// 		pokemonNames.push(pushedArray[].results[i].name)
+// 	}
+
+// 	console.log("pushPokemonNames()", pokemonNames)
+// }
 
 // let pushPokemonNames = () => {
 // 	for (pokemon of pushedArray[0].results) {
