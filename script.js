@@ -9,6 +9,8 @@ let pokemonNames = []
 let numbers = []
 let numbersAsString = []
 let searchBarInnerText = searchBarText
+let onClickFetchedData = []
+
 //initiates fetching of data and generation of html w pokemon
 let fetchAPI = async (url) => {
 	if (pokemonNames.length > 150) {
@@ -22,11 +24,45 @@ let fetchAPI = async (url) => {
 	await fetchAPI(nextURL)
 }
 
+//onClick of pokemon will fetch the pokemon's API and add pokedex entry + starting abilities
+//is async just for practice, it is farsically important for it only to run after 'importantFunc()' runs
+let theReFetchening = async (url) => {
+	let res = await fetch(url)
+	let data = await res.json()
+	console.log(data)
+	await importantFunc()
+	console.log(data)
+}
+//q4e, this right? added 'onClick=${indyPokemonButton()}' right into the accordian generator
+//----https://stackoverflow.com/questions/4825295/onclick-to-get-the-id-of-the-clicked-button
+let testButton = () => {
+	console.log("testButton with onclick in html")
+}
+
+let indyPokemonButton = () => {
+	console.log("indyPokemonButton")
+}
+
+// indyPokemonButton.addEventListener("click", function (e) {
+// 	let indyPokemonButton = e.target
+// 	console.log("indyPokemonButton", indyPokemonButton)
+// })
+
+//it is important this function completes its biz before theReFetchening() fetches and implements API
+// returns truthy
+let importantFunc = async () => {
+	setTimeout(() => {
+		console.log("importantFunc 2 second timer")
+		return 2 + 2
+	}, 2000)
+}
+//accordian item per pokemon is id="${pokemonName}
 //will generate HTML and modify html main to include a new accordian each time a pokemon is fetched
 let accordianItemGenerator = (pokemonName) => {
 	let accordianItem = `<div class="accordion-item" id="${pokemonName}">
 	<h2 class="accordion-header" id="heading${pokemonName}">
-	  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${pokemonName}" aria-expanded="true" aria-controls="collapse${pokemonName}" id="${pokemonName}Button">
+	  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${pokemonName}" aria-expanded="true" aria-controls="collapse${pokemonName}" id="${pokemonName}Button"
+	  onClick='indyPokemonButton(this.id)' >
 	  ${pokemonName}
 	  </button>
 	</h2>
