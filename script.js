@@ -1,10 +1,11 @@
+//implement onclick to fetch pokemon api for pokedex info + starting abilities
+//replace input window with dropdown of all pokemon
 // let body = document.getElementById("body")
 let main = document.getElementById("main")
 let pokemonAccordion = document.getElementById("pokemonAccordion")
 let searchBarText = document.getElementById("searchBarText")
 let searcehButton = document.getElementById("searchButton")
 let pokemonNames = []
-let fetchedData = []
 let numbers = []
 let numbersAsString = []
 let searchBarInnerText = searchBarText
@@ -25,7 +26,7 @@ let fetchAPI = async (url) => {
 let accordianItemGenerator = (pokemonName) => {
 	let accordianItem = `<div class="accordion-item" id="${pokemonName}">
 	<h2 class="accordion-header" id="heading${pokemonName}">
-	  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${pokemonName}" aria-expanded="true" aria-controls="collapse${pokemonName}">
+	  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${pokemonName}" aria-expanded="true" aria-controls="collapse${pokemonName}" id="${pokemonName}Button">
 	  ${pokemonName}
 	  </button>
 	</h2>
@@ -51,35 +52,31 @@ let pushPokemonNames = async (data) => {
 	}
 }
 
-// let postSearchAccordianItemGenerator = (pokemonName) => {
-// 	let postSearchAccordianItem = `<div class="accordion-item" id="${pokemonName}">
-// 	<h2 class="accordion-header" id="heading${pokemonName}">
-// 	  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${pokemonName}" aria-expanded="true" aria-controls="collapse${pokemonName}">
-// 	  ${pokemonName}
-// 	  </button>
-// 	</h2>
-// 	<div id="collapse${pokemonName}" class="accordion-collapse collapse" aria-labelledby="heading${pokemonName}" data-bs-parent="#pokemonAccordion">
-// 	  <div class="accordion-body">
-// 		<strong>${pokemonName} is a badass</strong>
-// 	  </div>
-// 	</div>
-// 	</div>`
-// 	pokemonAccordion.innerHTML = postSearchAccordianItem
-// }
-
-searcehButton.addEventListener("click", function () {
-	let postSearchAccordianItem = `<div class="accordion-item" id="${searchBarText.value}">
-<h2 class="accordion-header" id="heading${searchBarText.value}">
-  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${searchBarText.value}" aria-expanded="true" aria-controls="collapse${searchBarText.value}">
-  ${searchBarText.value}
-  </button>
-</h2>
-<div id="collapse${searchBarText.value}" class="accordion-collapse collapse" aria-labelledby="heading${searchBarText.value}" data-bs-parent="#pokemonAccordion">
-  <div class="accordion-body">
-	<strong>${searchBarText.value} is a badass</strong>
-  </div>
-</div>
-</div>`
-	pokemonAccordion.innerHTML = postSearchAccordianItem
+//create false button
+//make js 'click' it
+searcehButton.addEventListener("click", function (e) {
+	let searchText = searchBarText.value
+	let pokemonButton = document.getElementById(`${searchText}Button`)
+	if (pokemonButton === null) {
+		window.alert("no pokemon jose")
+	} else {
+		pokemonButton.click()
+	}
 })
 fetchAPI("https://pokeapi.co/api/v2/pokemon")
+// the below function causes all accordian itmes except searched pokemon to disappear
+// searcehButton.addEventListener("click", function () {
+// 	let postSearchAccordianItem = `<div class="accordion-item" id="${searchBarText.value}">
+// <h2 class="accordion-header" id="heading${searchBarText.value}">
+//   <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${searchBarText.value}" aria-expanded="true" aria-controls="collapse${searchBarText.value}">
+//   ${searchBarText.value}
+//   </button>
+// </h2>
+// <div id="collapse${searchBarText.value}" class="accordion-collapse collapse" aria-labelledby="heading${searchBarText.value}" data-bs-parent="#pokemonAccordion">
+//   <div class="accordion-body">
+// 	<strong>${searchBarText.value} is a badass</strong>
+//   </div>
+// </div>
+// </div>`
+// 	pokemonAccordion.innerHTML = postSearchAccordianItem
+// })
