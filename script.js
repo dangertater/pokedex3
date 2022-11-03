@@ -1,5 +1,6 @@
-//implement onclick to fetch pokemon api for pokedex info + starting abilities
-//replace input window with dropdown of all pokemon
+//TODO implement onclick to fetch pokemon api for pokedex info + starting abilities
+//TODO replace input window with dropdown of all pokemon
+//TODO accordian generator is producing CapCamelCase instead of camelCase, fix it
 // let body = document.getElementById("body")
 let main = document.getElementById("main")
 let pokemonAccordion = document.getElementById("pokemonAccordion")
@@ -39,8 +40,8 @@ let testButton = () => {
 	console.log("testButton with onclick in html")
 }
 
-let indyPokemonButton = () => {
-	console.log("indyPokemonButton")
+let indyPokemonButton = (pokemonNameTest) => {
+	console.log("indyPokemonButton", pokemonNameTest)
 }
 
 // indyPokemonButton.addEventListener("click", function (e) {
